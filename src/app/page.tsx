@@ -466,8 +466,8 @@ function StoreContent() {
             </div>
 
             <CategoryFilter
-              selectedCategory={category}
-              onSelectCategory={handleCategorySelect}
+              selected={category}
+              onSelect={handleCategorySelect}
             />
 
             {/* Results summary label */}

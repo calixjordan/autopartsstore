@@ -6,7 +6,9 @@ import { useAuthStore } from "@/store/authStore";
 import { Lock, Mail, User as UserIcon, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-export default function SignInPage() {
+import { Suspense } from "react";
+
+function SignInForm() {
   const { user, signIn, loading, error } = useAuthStore();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -129,5 +131,13 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen text-white bg-dark-950">Loading...</div>}>
+      <SignInForm />
+    </Suspense>
   );
 }

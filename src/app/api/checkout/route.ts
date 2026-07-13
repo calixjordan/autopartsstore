@@ -84,6 +84,8 @@ export async function POST(request: NextRequest) {
           product_data: {
             name: `Discount (${couponCode})`,
             description: `Promotional Coupon Applied`,
+            images: [],
+            metadata: { productId: "discount", partNumber: couponCode ?? "" },
           },
           unit_amount: -Math.round(discount * 100),
         },
@@ -98,6 +100,8 @@ export async function POST(request: NextRequest) {
           product_data: {
             name: "Express Delivery Fee",
             description: "Pan-India Secure Shipping",
+            images: [],
+            metadata: { productId: "shipping", partNumber: "SHIP-001" },
           },
           unit_amount: Math.round(shipping * 100),
         },

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { XCircle, ArrowLeft, ShoppingBag } from "lucide-react";
 
