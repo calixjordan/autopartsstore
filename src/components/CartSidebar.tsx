@@ -5,6 +5,7 @@ import { X, Plus, Minus, ShoppingBag, Trash2, ArrowRight, Package } from "lucide
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export function CartSidebar() {
   const {
@@ -21,6 +22,7 @@ export function CartSidebar() {
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const [couponInput, setCouponInput] = useState("");
   const [activeCoupon, setActiveCoupon] = useState("");
@@ -62,6 +64,14 @@ export function CartSidebar() {
 
   const handleCheckout = async () => {
     if (activeItems.length === 0) return;
+    if (!user) {
+      setCheckoutError("🔑 Please sign in to track your order & print tax invoices. Redirecting...");
+      setTimeout(() => {
+        closeCart();
+        router.push("/signin?redirect=/orders");
+      }, 1500);
+      return;
+    }
     setLoading(true);
     setCheckoutError(null);
     try {

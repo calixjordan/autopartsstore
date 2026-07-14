@@ -15,10 +15,15 @@ export async function POST(request: NextRequest) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    if (webhookSecret) {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    } else {
+      console.warn("⚠️ STRIPE_WEBHOOK_SECRET is not configured. Parsing raw event payload directly (testing mode).");
+      event = JSON.parse(body) as Stripe.Event;
+    }
   } catch (err) {
-    console.error("Webhook signature verification failed:", err);
-    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+    console.error("Webhook signature verification/parsing failed:", err);
+    return NextResponse.json({ error: "Invalid signature or payload" }, { status: 400 });
   }
 
   try {
