@@ -68,7 +68,7 @@ export function Navbar() {
       }`}
     >
       {/* Top Dynamic Offers Banner */}
-      <div className="w-full bg-gradient-to-r from-brand-600 via-orange-500 to-brand-700 py-1.5 px-4 text-center overflow-hidden border-b border-brand-500/10 flex items-center justify-center min-h-[30px]">
+      <div className="w-full bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 py-1.5 px-4 text-center overflow-hidden border-b border-brand-500/10 flex items-center justify-center min-h-[30px]">
         <div 
           key={activeOfferIndex} 
           className="text-white text-[10px] font-extrabold tracking-wide uppercase flex items-center gap-1.5 animate-slide-up"
@@ -82,12 +82,12 @@ export function Navbar() {
           
           {/* Logo & Brand - Premium Gradient Glow */}
           <Link href="/?reset=true" className="flex items-center gap-3 flex-shrink-0 group">
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 via-orange-600 to-amber-500 flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.3)] group-hover:shadow-[0_0_25px_rgba(249,115,22,0.6)] group-hover:rotate-12 transition-all duration-500">
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 via-brand-600 to-brand-500 flex items-center justify-center shadow-[0_0_15px_rgba(197,157,63,0.3)] group-hover:shadow-[0_0_25px_rgba(197,157,63,0.6)] group-hover:rotate-12 transition-all duration-500">
               <Wrench className="w-5 h-5 text-white animate-pulse-slow" />
               <div className="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <span className="font-extrabold text-xl text-white tracking-tight block">
-              Auto<span className="bg-gradient-to-r from-brand-400 via-orange-400 to-amber-300 bg-clip-text text-transparent">Parts</span><span className="text-dark-300 font-light text-sm ml-1 border-l border-dark-600 pl-2">INDIA</span>
+              Auto<span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-200 bg-clip-text text-transparent">Parts</span><span className="text-dark-300 font-light text-sm ml-1 border-l border-dark-600 pl-2">INDIA</span>
             </span>
           </Link>
 
@@ -96,7 +96,7 @@ export function Navbar() {
             onSubmit={handleSearch}
             className="hidden md:flex flex-1 max-w-lg relative group"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-500/20 to-amber-500/20 rounded-xl opacity-0 group-focus-within:opacity-100 blur transition-all duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-500/20 to-brand-600/20 rounded-xl opacity-0 group-focus-within:opacity-100 blur transition-all duration-500" />
             <div className="relative flex w-full">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 group-focus-within:text-brand-400 transition-colors pointer-events-none" />
               <input

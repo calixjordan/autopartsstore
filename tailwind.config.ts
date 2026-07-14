@@ -13,27 +13,27 @@ const config: Config = {
       },
       colors: {
         brand: {
-          50:  "#fff7ed",
-          100: "#ffedd5",
-          200: "#fed7aa",
-          300: "#fdba74",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
-          800: "#9a3412",
-          900: "#7c2d12",
+          50:  "#fdfbf7",
+          100: "#f7f1e3",
+          200: "#ebdcb9",
+          300: "#dfc78f",
+          400: "#d3b265",
+          500: "#c59d3f", // Warm luxurious signature gold
+          600: "#a9812e",
+          700: "#8a6624",
+          800: "#6b4e1c",
+          900: "#4f3914",
         },
         dark: {
-          900: "#0a0a0f",
-          800: "#111118",
-          700: "#1a1a28",
-          600: "#242438",
-          500: "#2e2e48",
-          400: "#3c3c5a",
-          300: "#6b6b8a",
-          200: "#9090b0",
-          100: "#c0c0d8",
+          900: "#0c0b0a", // Deep warm black (obsidian/warm onyx)
+          800: "#141211", // Warm dark charcoal
+          700: "#1d1b19", // Warm stone
+          600: "#272522", // Warm medium gray/brown
+          500: "#33302c",
+          400: "#494540",
+          300: "#746f68",
+          200: "#a39f97",
+          100: "#d4d1cc",
         },
       },
       keyframes: {

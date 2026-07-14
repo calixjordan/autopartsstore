@@ -13,7 +13,7 @@ interface ProductCardProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Engine: "bg-orange-500/15 text-orange-400 border-orange-500/30",
+  Engine: "bg-brand-500/15 text-brand-400 border-brand-500/30",
   Exterior: "bg-blue-500/15 text-blue-400 border-blue-500/30",
   Brakes: "bg-red-500/15 text-red-400 border-red-500/30",
   Electronics: "bg-purple-500/15 text-purple-400 border-purple-500/30",

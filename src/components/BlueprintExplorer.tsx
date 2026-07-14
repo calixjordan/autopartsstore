@@ -15,7 +15,7 @@ export function BlueprintExplorer({ onSelectCategory }: BlueprintExplorerProps) 
       id: "Engine",
       name: "Engine & Core",
       icon: Cog,
-      color: "text-orange-400 border-orange-500/30 bg-orange-500/10 hover:border-orange-500/80 hover:shadow-[0_0_20px_rgba(251,146,60,0.2)]",
+      color: "text-brand-400 border-brand-500/30 bg-brand-500/10 hover:border-brand-500/80 hover:shadow-[0_0_20px_rgba(197,157,63,0.2)]",
       tooltip: "Spark plugs, air filters, turbos, timing belts",
       coords: { x: "22%", y: "45%" },
     },

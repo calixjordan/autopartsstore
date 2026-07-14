@@ -568,7 +568,7 @@ function StoreContent() {
           {/* Brand Intro Hero Page View */}
           <section className="relative rounded-3xl overflow-hidden border border-brand-500/20 bg-dark-850 p-8 sm:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
             <div className="absolute top-0 right-0 w-80 h-80 bg-brand-500/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-500/5 rounded-full blur-[100px] pointer-events-none" />
             
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
@@ -577,7 +577,7 @@ function StoreContent() {
                 </span>
                 <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight">
                   Genuine Parts. <br />
-                  <span className="bg-gradient-to-r from-brand-400 via-orange-500 to-amber-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-brand-300 via-brand-500 to-brand-200 bg-clip-text text-transparent">
                     Guaranteed Fitment.
                   </span>
                 </h1>
