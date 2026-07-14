@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Product } from "@/types";
 import { useCartStore } from "@/store/cartStore";
+import { useGarageStore } from "@/store/garageStore";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Engine: "bg-orange-500/15 text-orange-400 border-orange-500/30",
@@ -38,6 +39,15 @@ export default function ProductDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const { addItem } = useCartStore();
+  const { activeVehicle } = useGarageStore();
+
+  const checkCompatibility = () => {
+    if (!activeVehicle || !product) return null;
+    const vehicleKey = `${activeVehicle.brand} ${activeVehicle.model}`.toLowerCase();
+    return product.compatibleModels.some((modelStr) =>
+      modelStr.toLowerCase().includes(vehicleKey)
+    );
+  };
 
   // Reviews list state
   const [reviewsList, setReviewsList] = useState([
@@ -258,6 +268,28 @@ export default function ProductDetailPage() {
         {/* Details */}
         <div className="space-y-6">
           <div>
+            {/* Active Garage Vehicle Fitment compatibility banner */}
+            {activeVehicle && (
+              (() => {
+                const fits = checkCompatibility();
+                return fits ? (
+                  <div className="bg-green-500/10 border border-green-500/20 text-green-400 rounded-2xl p-4 flex items-center gap-3 animate-fade-in text-xs font-bold mb-5">
+                    <Check className="w-5 h-5 flex-shrink-0 text-green-400" />
+                    <div>
+                      <span className="text-white font-extrabold">GUARANTEED FIT:</span> This part matches your selected <span className="underline">{activeVehicle.brand} {activeVehicle.model} {activeVehicle.year}</span>.
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl p-4 flex items-center gap-3 animate-fade-in text-xs font-bold mb-5">
+                    <AlertTriangle className="w-5 h-5 flex-shrink-0 text-red-400" />
+                    <div>
+                      <span className="text-white font-extrabold">FITMENT ALERT:</span> This part does not match your selected <span className="underline">{activeVehicle.brand} {activeVehicle.model} {activeVehicle.year}</span>.
+                    </div>
+                  </div>
+                );
+              })()
+            )}
+
             {/* Part number */}
             <div className="flex items-center gap-2 mb-3">
               <Package className="w-4 h-4 text-dark-400" />
