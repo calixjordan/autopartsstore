@@ -7,6 +7,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { Product } from "@/types";
 import { useGarageStore } from "@/store/garageStore";
+import { BlueprintExplorer } from "@/components/BlueprintExplorer";
+import { MaintenancePlanner } from "@/components/MaintenancePlanner";
 
 const BRAND_MODELS: Record<string, string[]> = {
   Toyota: ["Corolla", "Camry", "RAV4", "Fortuner", "Innova Hycross", "Land Cruiser", "Yaris"],
@@ -676,6 +678,18 @@ function StoreContent() {
               </div>
             </div>
           </section>
+
+          {/* Blueprint Explorer Section */}
+          <BlueprintExplorer
+            onSelectCategory={(cat) => {
+              setCategory(cat);
+              setExploring(true);
+              router.push(`/?category=${cat}`);
+            }}
+          />
+
+          {/* Maintenance Planner Section */}
+          <MaintenancePlanner />
 
           {/* Services We Offer Section */}
           <ServicesSection />

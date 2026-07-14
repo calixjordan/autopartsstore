@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
-import { Package, Clipboard, ShoppingBag, Truck, Calendar, MapPin, CheckCircle, ArrowLeft } from "lucide-react";
+import { Package, Clipboard, ShoppingBag, Truck, Calendar, MapPin, CheckCircle, ArrowLeft, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -44,6 +44,20 @@ export default function OrdersPage() {
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  const simulateNextStatus = (orderId: string) => {
+    setOrders((prev) =>
+      prev.map((o) => {
+        if (o.id !== orderId) return o;
+        let nextStatus = "pending";
+        if (o.status === "pending") nextStatus = "paid";
+        else if (o.status === "paid") nextStatus = "shipped";
+        else if (o.status === "shipped") nextStatus = "delivered";
+        else nextStatus = "pending";
+        return { ...o, status: nextStatus };
+      })
+    );
+  };
 
   const handlePrintInvoice = (order: Order) => {
     const printWindow = window.open("", "_blank");
@@ -349,8 +363,16 @@ export default function OrdersPage() {
                     </div>
                   )}
 
-                  {/* Print Invoice Action Button */}
-                  <div className="flex items-center justify-end flex-shrink-0 mt-2 md:mt-0">
+                  {/* Print Invoice & Simulator Action Buttons */}
+                  <div className="flex items-center justify-end flex-wrap gap-2 flex-shrink-0 mt-2 md:mt-0">
+                    <button
+                      onClick={() => simulateNextStatus(order.id)}
+                      className="btn-secondary text-[10px] py-2 px-3.5 uppercase font-bold tracking-wider hover:bg-orange-500 hover:text-white transition-all flex items-center gap-1.5"
+                      title="Advance order delivery stage for testing"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      Simulate Status
+                    </button>
                     <button
                       onClick={() => handlePrintInvoice(order)}
                       className="btn-secondary text-[10px] py-2 px-3.5 uppercase font-bold tracking-wider hover:bg-brand-500 hover:text-white transition-all flex items-center gap-1.5"
