@@ -65,14 +65,19 @@ export function GarageSelector() {
       {/* Floating Garage Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-bold transition-all duration-300 ${
+        className={`flex items-center gap-1.5 sm:gap-2.5 px-2.5 py-2.5 sm:px-4 rounded-xl border text-xs font-bold transition-all duration-300 ${
           activeVehicle 
             ? "bg-green-500/10 border-green-500/30 hover:border-green-500 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.1)]" 
             : "bg-dark-800 border-dark-600 hover:border-brand-500 text-dark-200 hover:text-white"
         }`}
       >
-        <Car className="w-4 h-4" />
-        <span className="truncate max-w-[150px]">{activeLabel}</span>
+        <div className="relative flex items-center justify-center">
+          <Car className="w-4.5 h-4.5 sm:w-4 sm:h-4" />
+          {activeVehicle && (
+            <span className="absolute -top-1 -right-1 flex h-2 w-2 rounded-full bg-green-400 ring-1 ring-dark-950" />
+          )}
+        </div>
+        <span className="truncate max-w-[95px] sm:max-w-[150px] hidden sm:inline">{activeLabel}</span>
         <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 

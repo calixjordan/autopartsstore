@@ -360,27 +360,29 @@ export function MaintenancePlanner() {
               </div>
 
               {/* Pricing sub-summary & Add to Cart button */}
-              <div className="border-t border-dark-700/60 pt-4 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-[10px] text-dark-400 font-bold uppercase">
-                    Service Bundle Price
-                  </p>
-                  <p className="text-2xl font-black text-brand-400">
-                    ₹{activeKit.discountPrice.toLocaleString("en-IN")}
-                    <span className="text-xs text-dark-300 line-through font-normal ml-2">
-                      ₹{activeKit.items.reduce((a, b) => a + b.price, 0).toLocaleString("en-IN")}
-                    </span>
-                  </p>
+              <div className="border-t border-dark-700/60 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center justify-between sm:block">
+                  <div>
+                    <p className="text-[10px] text-dark-400 font-bold uppercase">
+                      Service Bundle Price
+                    </p>
+                    <p className="text-2xl font-black text-brand-400">
+                      ₹{activeKit.discountPrice.toLocaleString("en-IN")}
+                      <span className="text-xs text-dark-300 line-through font-normal ml-2">
+                        ₹{activeKit.items.reduce((a, b) => a + b.price, 0).toLocaleString("en-IN")}
+                      </span>
+                    </p>
+                  </div>
                 </div>
 
                 {addedKitIndex === SERVICE_KITS.indexOf(activeKit) ? (
-                  <div className="bg-green-500/10 border border-green-500/20 text-green-400 font-bold py-3 px-6 rounded-xl flex items-center gap-2 text-xs">
+                  <div className="bg-green-500/10 border border-green-500/20 text-green-400 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 text-xs w-full sm:w-auto">
                     <Check className="w-4 h-4" /> Added to Cart!
                   </div>
                 ) : (
                   <button
                     onClick={handleAddKitToCart}
-                    className="btn-primary py-3 px-6 text-xs font-extrabold shadow-[0_0_15px_rgba(249,115,22,0.15)]"
+                    className="btn-primary py-3 px-6 text-xs font-extrabold shadow-[0_0_15px_rgba(249,115,22,0.15)] w-full sm:w-auto justify-center"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Add Service Kit to Cart

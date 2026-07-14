@@ -53,6 +53,14 @@ export function BlueprintExplorer({ onSelectCategory }: BlueprintExplorerProps) 
     },
   ];
 
+  const handleSpotClick = (spotId: string) => {
+    if (hoveredPart === spotId) {
+      onSelectCategory(spotId);
+    } else {
+      setHoveredPart(spotId);
+    }
+  };
+
   return (
     <section className="bg-dark-850 border border-dark-700/60 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl animate-fade-in">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.02),transparent_70%)] pointer-events-none" />
@@ -63,7 +71,10 @@ export function BlueprintExplorer({ onSelectCategory }: BlueprintExplorerProps) 
           Interactive Car Blueprint Explorer
         </h2>
         <p className="text-xs text-dark-300 mt-1">
-          Hover over hotspots on the chassis diagram to preview part categories and click to instantly filter the store catalog.
+          {typeof window !== 'undefined' && 'ontouchstart' in window 
+            ? "Tap a chassis hotspot to view component details, then tap again or tap 'Filter Store Catalog' to search."
+            : "Hover over hotspots on the chassis diagram to preview part categories and click to instantly filter the store catalog."
+          }
         </p>
       </div>
 
@@ -110,7 +121,7 @@ export function BlueprintExplorer({ onSelectCategory }: BlueprintExplorerProps) 
             return (
               <button
                 key={spot.id}
-                onClick={() => onSelectCategory(spot.id)}
+                onClick={() => handleSpotClick(spot.id)}
                 onMouseEnter={() => setHoveredPart(spot.id)}
                 onMouseLeave={() => setHoveredPart(null)}
                 className={`absolute w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 ${spot.color}`}

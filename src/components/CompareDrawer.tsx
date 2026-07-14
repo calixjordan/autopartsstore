@@ -24,22 +24,22 @@ export function CompareDrawer() {
       {/* Floating Compare Bar */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-2xl px-4 animate-slide-up">
         <div className="bg-dark-900/90 backdrop-blur-xl border border-brand-500/30 rounded-3xl p-4 shadow-2xl flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 flex-shrink-0">
               <ArrowRightLeft className="w-4.5 h-4.5" />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <h3 className="text-white text-xs font-black">Compare Parts</h3>
               <p className="text-[10px] text-dark-300">{items.length} of 3 items selected</p>
             </div>
           </div>
 
           {/* Thumbnails grid */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="relative w-12 h-12 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 flex-shrink-0 group"
+                className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden bg-dark-800 border border-dark-700 flex-shrink-0 group"
               >
                 <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
                 <button
@@ -52,27 +52,27 @@ export function CompareDrawer() {
               </div>
             ))}
             {items.length < 3 && (
-              <div className="w-12 h-12 rounded-xl border border-dashed border-dark-600 flex items-center justify-center text-[10px] text-dark-400 font-bold bg-dark-900/40">
-                +{3 - items.length} more
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl border border-dashed border-dark-600 flex items-center justify-center text-[9px] sm:text-[10px] text-dark-400 font-bold bg-dark-900/40">
+                +{3 - items.length}
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => setOpen(true)}
               disabled={items.length < 2}
-              className="btn-primary py-2 px-4 rounded-xl text-[10px] font-black tracking-wider uppercase disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(249,115,22,0.15)] flex items-center gap-1.5"
+              className="btn-primary py-2 px-2.5 sm:px-4 rounded-xl text-[9px] sm:text-[10px] font-black tracking-wider uppercase disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(249,115,22,0.15)] flex items-center gap-1"
             >
-              Compare
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Compare</span>
+              <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
             <button
               onClick={clear}
-              className="p-2.5 rounded-xl border border-dark-750 hover:bg-dark-800 text-dark-300 hover:text-white transition-colors"
+              className="p-2 sm:p-2.5 rounded-xl border border-dark-750 hover:bg-dark-800 text-dark-300 hover:text-white transition-colors"
               title="Clear all"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
