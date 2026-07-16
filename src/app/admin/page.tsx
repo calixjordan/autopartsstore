@@ -35,15 +35,15 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
 
-  // Fetch all products
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
       const res = await fetch("/api/products?pageSize=100");
       const data = await res.json();
-      setProducts(data.products || []);
+      setProducts(data && Array.isArray(data.products) ? data.products : []);
     } catch (e) {
       console.error("Failed to load products", e);
+      setProducts([]);
     } finally {
       setLoadingProducts(false);
     }
@@ -55,9 +55,10 @@ export default function AdminDashboard() {
     try {
       const res = await fetch("/api/orders");
       const data = await res.json();
-      setOrders(data || []);
+      setOrders(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error("Failed to load orders", e);
+      setOrders([]);
     } finally {
       setLoadingOrders(false);
     }
