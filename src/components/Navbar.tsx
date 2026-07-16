@@ -131,6 +131,14 @@ export function Navbar() {
             {/* User Profile / Sign In Link */}
             {mounted && user ? (
               <div className="flex items-center gap-2">
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="px-2.5 py-1.5 rounded-lg border border-brand-500/30 bg-brand-500/10 text-brand-400 text-[10px] font-extrabold transition-all hover:bg-brand-500/20"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
                 <Link
                   href="/orders"
                   className="hidden sm:flex flex-col text-right justify-center group"
