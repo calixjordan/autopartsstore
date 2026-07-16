@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { CartSidebar } from "@/components/CartSidebar";
@@ -8,7 +8,7 @@ import { MechanicAssistant } from "@/components/MechanicAssistant";
 import { Toaster } from "@/components/ui/Toaster";
 import { Footer } from "@/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AutoPartsIndia — Genuine Premium Car Spare Parts",
@@ -30,13 +30,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${outfit.className} bg-dark-900 text-dark-100 overflow-x-hidden min-h-screen relative`}>
+        {/* Luxury Background Ambient Glows & Grid Mesh */}
+        <div className="fixed inset-0 -z-50 bg-[#0c0b0a] overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-500/5 blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-brand-500/5 blur-[150px]" />
+          <div className="absolute top-[30%] left-[60%] w-[40%] h-[40%] rounded-full bg-brand-500/3 blur-[100px]" />
+          {/* Subtle grid lines */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d1b19_1px,transparent_1px),linear-gradient(to_bottom,#1d1b19_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35" />
+        </div>
+
         <Navbar />
         <CartSidebar />
         <CompareDrawer />
         <MechanicAssistant />
         <Toaster />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen relative z-10">{children}</main>
         <Footer />
       </body>
     </html>
