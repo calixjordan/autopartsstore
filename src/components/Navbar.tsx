@@ -98,11 +98,13 @@ export function Navbar() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-brand-500/20 to-brand-600/20 rounded-xl opacity-0 group-focus-within:opacity-100 blur transition-all duration-500" />
             <div className="relative flex w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 group-focus-within:text-brand-400 transition-colors pointer-events-none" />
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-brand-400 to-brand-500 shadow-[0_0_8px_rgba(197,157,63,0.3)]">
+                <Wrench className="w-3.5 h-3.5 text-white pointer-events-none" />
+              </div>
               <input
                 type="search"
                 placeholder="Search global parts, OEM numbers, car brands..."
-                className="w-full bg-dark-800/80 hover:bg-dark-800 text-white placeholder-dark-400 pl-11 pr-4 py-3 rounded-xl border border-dark-600 focus:border-brand-500 focus:bg-dark-900 focus:outline-none focus:ring-1 focus:ring-brand-500/50 shadow-inner transition-all duration-300 text-sm"
+                className="w-full bg-dark-800/80 hover:bg-dark-800 text-white placeholder-dark-400 pl-12 pr-4 py-3 rounded-xl border border-dark-600 focus:border-brand-500 focus:bg-dark-900 focus:outline-none focus:ring-1 focus:ring-brand-500/50 shadow-inner transition-all duration-300 text-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

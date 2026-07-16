@@ -595,12 +595,15 @@ function StoreContent() {
                   </button>
                   
                   <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[200px] max-w-sm relative">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-brand-400 to-brand-500 shadow-[0_0_8px_rgba(197,157,63,0.3)]">
+                      <Wrench className="w-3.5 h-3.5 text-white pointer-events-none" />
+                    </div>
                     <input
                       type="text"
                       placeholder="Search parts directly... (e.g. Brake Pads)"
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
-                      className="w-full bg-dark-900 border border-dark-600 focus:border-brand-500 rounded-xl pl-4 pr-10 py-3 text-xs text-white outline-none"
+                      className="w-full bg-dark-900 border border-dark-600 focus:border-brand-500 rounded-xl pl-11 pr-10 py-3 text-xs text-white outline-none"
                     />
                     <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white">
                       <Search className="w-4 h-4" />
@@ -703,15 +706,35 @@ function StoreContent() {
 }
 
 export default function HomePage() {
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1800);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!mounted) {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 text-brand-500 animate-spin" />
+      <div className="fixed inset-0 bg-[#0c0b0a] z-50 flex flex-col items-center justify-center gap-6 select-none animate-fade-in">
+        {/* Animated glowing loader logo */}
+        <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-br from-brand-400 via-brand-600 to-brand-500 flex items-center justify-center shadow-[0_0_50px_rgba(197,157,63,0.3)]">
+          <Wrench className="w-12 h-12 text-white animate-spin-slow" />
+          <div className="absolute inset-0 rounded-3xl bg-white/10" />
+        </div>
+        <div className="text-center space-y-2">
+          <span className="font-extrabold text-2xl text-white tracking-tight block">
+            Auto<span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-200 bg-clip-text text-transparent">Parts</span><span className="text-dark-300 font-light text-sm ml-1 border-l border-dark-600 pl-2">INDIA</span>
+          </span>
+          <p className="text-[10px] text-brand-400 font-extrabold tracking-widest uppercase animate-pulse">
+            Loading Genuine OEM Spares
+          </p>
+        </div>
+        {/* Progress bar shimmer line */}
+        <div className="w-40 h-1 bg-dark-800 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-brand-500 to-brand-300 rounded-full animate-loader-progress" />
+        </div>
       </div>
     );
   }

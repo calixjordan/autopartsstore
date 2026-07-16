@@ -105,4 +105,17 @@
   .animate-pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
+
+  .animate-spin-slow {
+    animation: spin 6s linear infinite;
+  }
+
+  .animate-loader-progress {
+    animation: loader-progress 1.8s ease-in-out forwards;
+  }
+
+  @keyframes loader-progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
 }
