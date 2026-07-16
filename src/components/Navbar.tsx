@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Wrench, Search, Menu, X, Package } from "lucide-react";
+import { ShoppingCart, Wrench, Search, Menu, X, Package, Heart } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GarageSelector } from "@/components/GarageSelector";
@@ -10,6 +11,7 @@ import { useAuthStore } from "@/store/authStore";
 
 export function Navbar() {
   const { totalItems, toggleCart } = useCartStore();
+  const { items: wishlistItems, toggleWishlist } = useWishlistStore();
   const { user, signOut } = useAuthStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,6 +60,7 @@ export function Navbar() {
   };
 
   const count = mounted ? totalItems() : 0;
+  const wishlistCount = mounted ? wishlistItems.length : 0;
 
   return (
     <header 
@@ -150,6 +153,20 @@ export function Navbar() {
                 Sign In
               </Link>
             )}
+
+            {/* Interactive Wishlist Button */}
+            <button
+              onClick={toggleWishlist}
+              className="relative p-3 rounded-xl bg-dark-800 hover:bg-dark-700 border border-dark-600 hover:border-brand-500/60 shadow-lg hover:shadow-brand-500/5 transition-all duration-300 group"
+              aria-label="Open wishlist"
+            >
+              <Heart className={`w-5 h-5 text-dark-200 group-hover:text-red-400 group-hover:scale-110 transition-all duration-300 ${wishlistCount > 0 ? "fill-red-500 text-red-500" : ""}`} />
+              {wishlistCount > 0 && (
+                <div className="absolute -top-2 -right-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-black text-white ring-2 ring-dark-900 shadow-[0_0_10px_rgba(239,68,68,0.6)]">
+                  {wishlistCount}
+                </div>
+              )}
+            </button>
 
             {/* Premium Interactive Cart Button */}
             <button

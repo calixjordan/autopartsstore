@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { CartSidebar } from "@/components/CartSidebar";
+import { WishlistSidebar } from "@/components/WishlistSidebar";
 import { CompareDrawer } from "@/components/CompareDrawer";
 import { MechanicAssistant } from "@/components/MechanicAssistant";
 import { Toaster } from "@/components/ui/Toaster";
@@ -42,6 +43,7 @@ export default function RootLayout({
 
         <Navbar />
         <CartSidebar />
+        <WishlistSidebar />
         <CompareDrawer />
         <MechanicAssistant />
         <Toaster />

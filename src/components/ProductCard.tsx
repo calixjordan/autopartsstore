@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Star, AlertTriangle, Package, Check, XCircle } from "lucide-react";
+import { ShoppingCart, Star, AlertTriangle, Package, Check, XCircle, Heart } from "lucide-react";
 import { Product } from "@/types";
 import { useCartStore } from "@/store/cartStore";
 import { useGarageStore } from "@/store/garageStore";
 import { useCompareStore } from "@/store/compareStore";
+import { useWishlistStore } from "@/store/wishlistStore";
 
 interface ProductCardProps {
   product: Product;
@@ -49,6 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCartStore();
   const { activeVehicle } = useGarageStore();
   const { items: compareItems, addItem: addCompare, removeItem: removeCompare } = useCompareStore();
+  const { addItem: addWishlist, removeItem: removeWishlist, hasItem } = useWishlistStore();
 
   const categoryColor =
     CATEGORY_COLORS[product.category] ||
@@ -108,9 +110,24 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </Link>
 
-      {/* Compare Checkbox */}
-      <div className="absolute top-3 right-3 z-10" onClick={(e) => e.stopPropagation()}>
-        <label className="flex items-center gap-1.5 bg-dark-900/80 backdrop-blur-md border border-dark-600 rounded-lg px-2 py-1 text-[10px] text-white cursor-pointer hover:bg-dark-850 select-none">
+      {/* Compare & Wishlist Overlay */}
+      <div className="absolute top-3 right-3 z-10 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={() => {
+            const isWishlisted = hasItem(product.id);
+            if (isWishlisted) {
+              removeWishlist(product.id);
+            } else {
+              addWishlist(product as never);
+            }
+          }}
+          className="w-8 h-8 rounded-full bg-dark-900/80 backdrop-blur-md border border-dark-600/60 flex items-center justify-center text-dark-300 hover:text-red-400 hover:bg-dark-800 transition-colors shadow-sm select-none"
+          title={hasItem(product.id) ? "Remove from Saved" : "Save for Later"}
+        >
+          <Heart className={`w-4 h-4 ${hasItem(product.id) ? "fill-red-500 text-red-500" : ""}`} />
+        </button>
+
+        <label className="flex items-center gap-1.5 bg-dark-900/80 backdrop-blur-md border border-dark-600 rounded-lg px-2 py-1.5 text-[10px] text-white cursor-pointer hover:bg-dark-850 select-none">
           <input
             type="checkbox"
             checked={!!compareItems.find((item) => item.id === product.id)}

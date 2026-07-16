@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, SlidersHorizontal, Package, Loader2, RefreshCw, Car, Shield, Truck, Wrench, Star, MessageSquare, ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
+import { Search, SlidersHorizontal, Package, Loader2, RefreshCw, Car, Shield, Truck, Wrench, Star, MessageSquare, ArrowRight, ArrowLeft, ChevronDown, Cog, Disc } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { Product } from "@/types";
@@ -569,6 +569,19 @@ function StoreContent() {
           <section className="relative rounded-3xl overflow-hidden border border-brand-500/20 bg-dark-850 p-8 sm:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
             <div className="absolute top-0 right-0 w-80 h-80 bg-brand-500/10 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-500/5 rounded-full blur-[100px] pointer-events-none" />
+            
+            {/* Ambient bobbing mechanical bubbles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+              <div className="absolute top-[12%] left-[4%] w-14 h-14 rounded-full bg-gradient-to-br from-brand-300/10 to-brand-500/5 border border-brand-500/15 flex items-center justify-center animate-float shadow-sm">
+                <Cog className="w-6 h-6 text-brand-500/20 animate-spin-slow" />
+              </div>
+              <div className="absolute bottom-[20%] right-[6%] w-20 h-20 rounded-full bg-gradient-to-tr from-brand-400/5 to-brand-600/10 border border-brand-500/10 flex items-center justify-center animate-float shadow-sm [animation-delay:1.5s]">
+                <Wrench className="w-10 h-10 text-brand-500/15 -rotate-45" />
+              </div>
+              <div className="absolute top-[35%] right-[10%] w-10 h-10 rounded-full bg-gradient-to-br from-brand-200/10 to-transparent border border-brand-500/10 flex items-center justify-center animate-float shadow-sm [animation-delay:3s]">
+                <Disc className="w-5 h-5 text-brand-500/25 animate-spin-slow" />
+              </div>
+            </div>
             
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
