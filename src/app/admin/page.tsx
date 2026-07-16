@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
-import { Package, ShieldAlert, Plus, Edit2, Check, RefreshCw, Layers, DollarSign, User } from "lucide-react";
+import { Package, ShieldAlert, Plus, Edit2, Check, RefreshCw, Layers, DollarSign, User, Upload } from "lucide-react";
 import { Product } from "@/types";
 import Image from "next/image";
 
@@ -29,6 +29,10 @@ export default function AdminDashboard() {
   const [newCategory, setNewCategory] = useState("Engine");
   const [newBrand, setNewBrand] = useState("");
   const [newCompat, setNewCompat] = useState("");
+  
+  // Image Upload States
+  const [newImageBase64, setNewImageBase64] = useState("");
+  const [editImages, setEditImages] = useState<Record<string, string>>({});
   
   // Orders Management States
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,7 +75,6 @@ export default function AdminDashboard() {
     }
   }, [user]);
 
-  // Handle Price / Stock quick update
   const handleQuickSave = async (id: string) => {
     try {
       const res = await fetch(`/api/products/${id}`, {
@@ -80,17 +83,45 @@ export default function AdminDashboard() {
         body: JSON.stringify({
           price: parseFloat(editPrice),
           stock: parseInt(editStock),
+          ...(editImages[id] && { imageUrl: editImages[id] }),
         }),
       });
       if (res.ok) {
         const updated = await res.json();
         setProducts((prev) =>
-          prev.map((p) => (p.id === id ? { ...p, price: updated.price, stock: updated.stock } : p))
+          prev.map((p) => (p.id === id ? { ...p, price: updated.price, stock: updated.stock, imageUrl: updated.imageUrl } : p))
         );
         setEditingId(null);
+        // Clear edit image
+        const copy = { ...editImages };
+        delete copy[id];
+        setEditImages(copy);
       }
     } catch (e) {
       console.error("Failed to update product details", e);
+    }
+  };
+
+  // Image Upload Change Handlers
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImageBase64(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditImageChange = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditImages((prev) => ({ ...prev, [id]: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -115,7 +146,7 @@ export default function AdminDashboard() {
           category: newCategory,
           brand: newBrand,
           compatibleModels: compatArray,
-          imageUrl: "/engine-oem.jpg",
+          imageUrl: newImageBase64 || "/engine-oem.jpg",
         }),
       });
 
@@ -131,6 +162,7 @@ export default function AdminDashboard() {
         setNewPartNumber("");
         setNewBrand("");
         setNewCompat("");
+        setNewImageBase64("");
       }
     } catch (e) {
       console.error("Failed to create product", e);
@@ -332,14 +364,29 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] text-dark-300 font-bold uppercase">Part Description</label>
-                <textarea
-                  required
-                  rows={2}
-                  value={newDesc}
-                  onChange={(e) => setNewDesc(e.target.value)}
-                  className="w-full bg-dark-900 border border-dark-600 rounded-xl px-3 py-2 text-xs text-white focus:border-brand-500 outline-none resize-none"
-                />
+                <label className="text-[10px] text-dark-300 font-bold uppercase">Upload Part Photo</label>
+                <div className="flex items-center gap-4">
+                  <label className="flex flex-col items-center justify-center border border-dashed border-brand-500/30 hover:border-brand-500/60 bg-dark-900 rounded-xl px-4 py-3 cursor-pointer hover:bg-dark-850 transition-colors w-full sm:max-w-xs text-center">
+                    <span className="text-xs text-brand-400 font-extrabold flex items-center gap-1.5 justify-center"><Upload className="w-3.5 h-3.5" /> Choose Image File</span>
+                    <span className="text-[9px] text-dark-400 mt-0.5">Supports PNG, JPG, WebP</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                  {newImageBase64 && (
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-brand-500/20">
+                      <Image
+                        src={newImageBase64}
+                        alt="Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="flex gap-2 justify-end">
@@ -427,12 +474,26 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-4 text-center">
                             {isEditing ? (
-                              <button
-                                onClick={() => handleQuickSave(p.id)}
-                                className="p-1.5 rounded-lg bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30"
-                              >
-                                <Check className="w-3.5 h-3.5" />
-                              </button>
+                              <div className="flex items-center justify-center gap-2">
+                                <label className="p-1.5 rounded-lg bg-dark-700 text-dark-200 border border-dark-600 hover:text-brand-400 hover:border-brand-500/40 cursor-pointer flex items-center justify-center relative">
+                                  <Upload className="w-3.5 h-3.5" />
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleEditImageChange(p.id, e)}
+                                    className="hidden"
+                                  />
+                                  {editImages[p.id] && (
+                                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-500 border border-white" />
+                                  )}
+                                </label>
+                                <button
+                                  onClick={() => handleQuickSave(p.id)}
+                                  className="p-1.5 rounded-lg bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30"
+                                >
+                                  <Check className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
                             ) : (
                               <button
                                 onClick={() => {

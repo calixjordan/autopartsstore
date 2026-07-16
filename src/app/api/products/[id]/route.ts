@@ -42,6 +42,7 @@ export async function PUT(
         ...(price !== undefined && { price: parseFloat(price) }),
         ...(stock !== undefined && { stock: parseInt(stock) }),
         ...(description && { description }),
+        ...(body.imageUrl && { imageUrl: body.imageUrl }),
       },
     });
 
@@ -59,10 +60,10 @@ export async function PUT(
       price: parseFloat(body.price) || 0,
       stock: parseInt(body.stock) || 0,
       description: body.description || "",
+      imageUrl: body.imageUrl || "/placeholder.jpg",
       compatibleModels: ["Toyota Corolla (2018-2024)"],
       partNumber: "MOCK-PN-" + Math.random().toString(36).slice(2, 6).toUpperCase(),
       brand: "OEM",
-      imageUrl: "/placeholder.jpg",
       category: "Engine",
       mockUpdated: true,
     });
