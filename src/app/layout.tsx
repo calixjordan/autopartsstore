@@ -11,14 +11,14 @@ import { Footer } from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AutoPartsIndia — Genuine Maruti Suzuki Spare Parts",
+  title: "AutoPartsIndia — Genuine Premium Car Spare Parts",
   description:
-    "Shop 100% genuine OEM spare parts for Maruti Suzuki vehicles. Swift, Baleno, Alto, Dzire, Wagon R, Ertiga and more. Fast delivery across India.",
+    "Shop 100% genuine OEM spare parts and upgrades for German, Japanese, US, Indian, and Korean car models. Fast delivery across India with fitment guarantee.",
   keywords:
-    "Maruti Suzuki spare parts, genuine OEM parts, Swift parts, Baleno parts, Alto parts, Dzire parts, automotive spare parts India",
+    "car spare parts, genuine OEM parts, car spares India, multi-brand auto parts, automotive parts store, BMW parts, Honda parts, Toyota parts",
   openGraph: {
-    title: "AutoPartsIndia — Genuine Maruti Suzuki Spare Parts",
-    description: "100% genuine OEM spare parts for Maruti Suzuki vehicles.",
+    title: "AutoPartsIndia — Genuine Premium Car Spare Parts",
+    description: "100% genuine OEM spare parts for premium vehicle makes.",
     type: "website",
   },
 };
