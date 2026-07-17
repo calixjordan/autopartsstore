@@ -33,6 +33,10 @@ export default function AdminDashboard() {
   // Image Upload States
   const [newImageBase64, setNewImageBase64] = useState("");
   const [editImages, setEditImages] = useState<Record<string, string>>({});
+  const [searchingImage, setSearchingImage] = useState(false);
+  const [searchedPhotos, setSearchedPhotos] = useState<{ id: string; url: string; thumb: string; description: string }[]>([]);
+  const [activeSearchQuery, setActiveSearchQuery] = useState("");
+  const [searchingEditId, setSearchingEditId] = useState<string | null>(null);
   
   // Orders Management States
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,6 +126,40 @@ export default function AdminDashboard() {
         setEditImages((prev) => ({ ...prev, [id]: reader.result as string }));
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAutoSearchNewImage = async () => {
+    if (!newName.trim()) return;
+    setSearchingImage(true);
+    setSearchedPhotos([]);
+    setActiveSearchQuery(newName);
+    try {
+      const res = await fetch(`/api/products/search-image?query=${encodeURIComponent(newName)}`);
+      const data = await res.json();
+      if (data.photos) {
+        setSearchedPhotos(data.photos);
+      }
+    } catch (e) {
+      console.error("Auto image search failed", e);
+    } finally {
+      setSearchingImage(false);
+    }
+  };
+
+  const handleAutoSearchEditImage = async (id: string, name: string) => {
+    setSearchingEditId(id);
+    try {
+      const res = await fetch(`/api/products/search-image?query=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (data.photos && data.photos.length > 0) {
+        const firstMatchUrl = data.photos[0].url;
+        setEditImages((prev) => ({ ...prev, [id]: firstMatchUrl }));
+      }
+    } catch (e) {
+      console.error("Auto image edit assign failed", e);
+    } finally {
+      setSearchingEditId(null);
     }
   };
 
@@ -365,7 +403,7 @@ export default function AdminDashboard() {
 
               <div className="space-y-1">
                 <label className="text-[10px] text-dark-300 font-bold uppercase">Upload Part Photo</label>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                   <label className="flex flex-col items-center justify-center border border-dashed border-brand-500/30 hover:border-brand-500/60 bg-dark-900 rounded-xl px-4 py-3 cursor-pointer hover:bg-dark-850 transition-colors w-full sm:max-w-xs text-center">
                     <span className="text-xs text-brand-400 font-extrabold flex items-center gap-1.5 justify-center"><Upload className="w-3.5 h-3.5" /> Choose Image File</span>
                     <span className="text-[9px] text-dark-400 mt-0.5">Supports PNG, JPG, WebP</span>
@@ -376,17 +414,74 @@ export default function AdminDashboard() {
                       className="hidden"
                     />
                   </label>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleAutoSearchNewImage}
+                      disabled={searchingImage || !newName.trim()}
+                      className="btn-secondary text-xs py-3 px-4 flex items-center gap-1.5 disabled:opacity-50"
+                    >
+                      {searchingImage ? (
+                        <span className="w-3.5 h-3.5 border-2 border-brand-400/30 border-t-brand-400 rounded-full animate-spin" />
+                      ) : (
+                        "🔍 Auto-Fetch Photo"
+                      )}
+                    </button>
+                    {!newName.trim() && (
+                      <span className="text-[9px] text-dark-450 hidden sm:inline">Fill Part Name first</span>
+                    )}
+                  </div>
+
                   {newImageBase64 && (
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-brand-500/20">
-                      <Image
-                        src={newImageBase64}
-                        alt="Preview"
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="flex items-center gap-2 bg-dark-900/60 border border-dark-600/30 rounded-xl p-2 pr-4 ml-auto">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-brand-500/20 flex-shrink-0">
+                        <Image
+                          src={newImageBase64}
+                          alt="Preview"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="text-left">
+                        <p className="text-[10px] text-green-400 font-bold">Image Set Successfully</p>
+                        <p className="text-[8px] text-dark-300 truncate max-w-[120px]">
+                          {newImageBase64.startsWith("data:") ? "Local File Upload" : newImageBase64}
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
+
+                {searchedPhotos.length > 0 && (
+                  <div className="bg-dark-900 p-4 rounded-2xl border border-dark-700/60 mt-3 space-y-3">
+                    <p className="text-[10px] text-dark-400 font-extrabold uppercase">
+                      Select matching image below ({searchedPhotos.length} photos found for &quot;{activeSearchQuery}&quot;)
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {searchedPhotos.map((photo) => (
+                        <div
+                          key={photo.id}
+                          onClick={() => {
+                            setNewImageBase64(photo.url);
+                            setSearchedPhotos([]);
+                          }}
+                          className="relative aspect-video rounded-xl overflow-hidden border border-dark-700 hover:border-brand-500 cursor-pointer transition-all group"
+                        >
+                          <Image
+                            src={photo.thumb}
+                            alt={photo.description}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                            <span className="text-[9px] font-extrabold text-white bg-brand-500 py-1 px-2.5 rounded-lg">Use Photo</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-2 justify-end">
@@ -474,26 +569,42 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-4 text-center">
                             {isEditing ? (
-                              <div className="flex items-center justify-center gap-2">
-                                <label className="p-1.5 rounded-lg bg-dark-700 text-dark-200 border border-dark-600 hover:text-brand-400 hover:border-brand-500/40 cursor-pointer flex items-center justify-center relative">
-                                  <Upload className="w-3.5 h-3.5" />
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => handleEditImageChange(p.id, e)}
-                                    className="hidden"
-                                  />
-                                  {editImages[p.id] && (
-                                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-500 border border-white" />
-                                  )}
-                                </label>
-                                <button
-                                  onClick={() => handleQuickSave(p.id)}
-                                  className="p-1.5 rounded-lg bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30"
-                                >
-                                  <Check className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
+                                <div className="flex items-center justify-center gap-2">
+                                  <label className="p-1.5 rounded-lg bg-dark-700 text-dark-200 border border-dark-600 hover:text-brand-400 hover:border-brand-500/40 cursor-pointer flex items-center justify-center relative">
+                                    <Upload className="w-3.5 h-3.5" />
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) => handleEditImageChange(p.id, e)}
+                                      className="hidden"
+                                    />
+                                    {editImages[p.id] && editImages[p.id].startsWith("data:") && (
+                                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-500 border border-white" />
+                                    )}
+                                  </label>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAutoSearchEditImage(p.id, p.name)}
+                                    disabled={searchingEditId === p.id}
+                                    className="p-1.5 rounded-lg bg-dark-700 text-dark-200 border border-dark-600 hover:text-brand-400 hover:border-brand-500/40 flex items-center justify-center relative disabled:opacity-50"
+                                    title="Auto-fetch photo from name"
+                                  >
+                                    {searchingEditId === p.id ? (
+                                      <span className="w-3.5 h-3.5 border-2 border-brand-400/30 border-t-brand-400 rounded-full animate-spin" />
+                                    ) : (
+                                      <Layers className="w-3.5 h-3.5" />
+                                    )}
+                                    {editImages[p.id] && !editImages[p.id].startsWith("data:") && (
+                                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-green-500 border border-white" />
+                                    )}
+                                  </button>
+                                  <button
+                                    onClick={() => handleQuickSave(p.id)}
+                                    className="p-1.5 rounded-lg bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30"
+                                  >
+                                    <Check className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
                             ) : (
                               <button
                                 onClick={() => {
