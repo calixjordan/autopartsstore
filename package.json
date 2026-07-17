@@ -10,6 +10,7 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+    "auto-images": "node scripts/auto-update-images.js",
     "setup": "npm install && npx prisma generate && npx prisma db push && npm run prisma:seed"
   },
   "prisma": {
