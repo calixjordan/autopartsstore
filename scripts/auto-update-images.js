@@ -36,8 +36,8 @@ async function main() {
     const product = products[i];
     const keywords = getKeywordsForPart(product.name);
     
-    // Generate a unique high-resolution featured Unsplash photo redirect URL using the keywords and seed signature
-    const chosenUrl = `https://images.unsplash.com/featured/?${keywords}&sig=${i}`;
+    // Generate a unique high-resolution featured LoremFlickr photo redirect URL using the keywords and seed signature
+    const chosenUrl = `https://loremflickr.com/600/400/${keywords}?lock=${i}`;
 
     try {
       await prisma.product.update({
