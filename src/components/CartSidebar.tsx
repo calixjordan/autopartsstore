@@ -113,22 +113,20 @@ export function CartSidebar() {
   const shipping = total > 4999 || activeCoupon === "FREESHIP" ? 0 : (total === 0 ? 0 : 150);
   const grandTotal = total - discount + shipping;
 
-  return (
-    <>
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 animate-fade-in"
-          onClick={closeCart}
-        />
-      )}
+  if (!isOpen) return null;
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-dark-800 border-l border-dark-600 z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
+  return (
+    <div className="fixed inset-0 z-50 overflow-hidden select-none">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm z-50 animate-fade-in"
+        onClick={closeCart}
+      />
+
+      <div className="absolute inset-y-0 right-0 max-w-full flex pl-10 z-50">
+        <aside
+          className="w-screen max-w-md bg-dark-800/95 backdrop-blur-xl border-l border-dark-600/50 shadow-2xl flex flex-col h-full animate-slide-in-right"
+        >
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-dark-600">
           <div className="flex items-center gap-2.5">
@@ -195,14 +193,16 @@ export function CartSidebar() {
                 </div>
 
                 {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-semibold leading-tight line-clamp-2">
-                    {item.product.name}
-                  </p>
-                  <p className="text-dark-300 text-xs mt-0.5">
-                    PN: {item.product.partNumber}
-                  </p>
-                  <p className="text-brand-400 font-bold mt-1.5">
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-white text-xs sm:text-sm font-semibold truncate hover:text-brand-400 transition-colors">
+                      {item.product.name}
+                    </h4>
+                    <p className="text-[10px] text-dark-300 mt-0.5 font-mono">
+                      PN: {item.product.partNumber}
+                    </p>
+                  </div>
+                  <p className="text-brand-400 font-bold mt-1 text-xs">
                     ₹{(item.product.price * item.quantity).toLocaleString("en-IN")}
                   </p>
 
@@ -351,7 +351,8 @@ export function CartSidebar() {
             </p>
           </div>
         )}
-      </aside>
-    </>
+        </aside>
+      </div>
+    </div>
   );
 }
